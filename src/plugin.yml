@@ -1,0 +1,5 @@
+name: LouwBanque
+version: 1.0
+author: Loulouw
+main: fr.loulouw.louwbanque.Main
+softdepend: [WorldGuard]

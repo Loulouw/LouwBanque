@@ -1,5 +1,7 @@
 package fr.loulouw.louwbanque.commandes;
 
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import fr.loulouw.louwbanque.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -30,6 +32,10 @@ public class CommandBanque implements CommandExecutor {
         }
         Player p = (Player) sender; //On récupère le joueur qui a envoyé la commande
 
+        if(!checkRegion(p)){
+            p.sendMessage(ChatColor.RED + "Vous n'êtes pas dans une de vos maisons");
+            return true;
+        }
         generateInventory(p);
         return true;
     }
@@ -61,6 +67,11 @@ public class CommandBanque implements CommandExecutor {
         invF.clear(); //on le clear (ca sert pas a grand chose je pense mais au cas ou)
         invF.setContents(contents); // on lui attribut tout les item contenant dans contents
         p.openInventory(invF); //on fait ouvrir l'inventaire au joueur
+    }
+
+    private boolean checkRegion(Player p){
+        RegionManager regionManager = Main.worldGuard.getRegionManager(p.getWorld());
+        return regionManager.getApplicableRegions(p.getLocation()).isOwnerOfAll(Main.worldGuard.wrapPlayer(p));
     }
 
 
